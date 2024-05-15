@@ -15,7 +15,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
+        margin: const EdgeInsets.only(
+          top: 50.0,
+          left: 20.0,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -27,6 +30,7 @@ class _HomeState extends State<Home> {
                   style: AppWidget.boldTextFeildStyle(),
                 ),
                 Container(
+                  margin: EdgeInsets.all(5),
                   padding: EdgeInsets.all(3),
                   decoration: BoxDecoration(
                       color: Colors.black,
@@ -50,7 +54,7 @@ class _HomeState extends State<Home> {
               style: AppWidget.LightTextFeildStyle(),
             ),
             SizedBox(height: 20.0),
-            showItem(),
+            Container(margin: EdgeInsets.only(right: 20.0), child: showItem()),
             SizedBox(
               height: 30.0,
             ),
@@ -109,16 +113,16 @@ class _HomeState extends State<Home> {
                                   width: 150,
                                   fit: BoxFit.cover,
                                 ),
-                                Text("Doğranmış Sebze",
+                                Text("Karışık Sebze Salata",
                                     style: AppWidget.semiBoldTextFeildStyle()),
                                 SizedBox(height: 5.0),
                                 Text(
-                                  "Taze ve Sağlıklı",
+                                  "Soğanlı ve Baharatlı",
                                   style: AppWidget.LightTextFeildStyle(),
                                 ),
                                 SizedBox(height: 5.0),
                                 Text(
-                                  "\100₺",
+                                  "\125₺",
                                   style: AppWidget.semiBoldTextFeildStyle(),
                                 )
                               ],
@@ -130,7 +134,60 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-            )
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            Container(
+              margin: EdgeInsets.only(right: 20.0),
+              child: Material(
+                elevation: 5.0,
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        "images/salad2.png",
+                        height: 120,
+                        width: 120,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(width: 20.0),
+                      Column(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text(
+                              "Akdeniz Nohut Salatası",
+                              style: AppWidget.semiBoldTextFeildStyle(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5.0,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text(
+                              "Keçi Peynirli",
+                              style: AppWidget.LightTextFeildStyle(),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text(
+                              "\150₺",
+                              style: AppWidget.semiBoldTextFeildStyle(),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

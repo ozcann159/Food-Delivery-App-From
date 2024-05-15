@@ -29,7 +29,7 @@ class AppWidget {
     return TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w500,
-        fontSize: 18.0,
+        fontSize: 16.0,
         fontFamily: 'Poppins');
   }
 }
