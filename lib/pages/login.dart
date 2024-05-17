@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryapp/pages/bottomnav.dart';
 import 'package:fooddeliveryapp/pages/signup.dart';
 import 'package:fooddeliveryapp/widget/widget_support.dart';
 
@@ -10,6 +12,37 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  String email = "", password = "";
+
+  final _formkey = GlobalKey<FormState>();
+
+  TextEditingController useremailcontroller = new TextEditingController();
+
+  TextEditingController userpasswordcontroller = new TextEditingController();
+
+  userLogin() async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Bottomnav()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user - not - found') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "No user found for that email",
+          style: TextStyle(fontSize: 18.0, color: Colors.black),
+        )));
+      } else if (e.code == "wrong-password") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Wrong Password Provided by User",
+          style: TextStyle(fontSize: 18.0, color: Colors.black),
+        )));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,58 +101,91 @@ class _LoginState extends State<Login> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 20.0),
-                          Text(
-                            "Giriş Yap",
-                            style: AppWidget.HeadlineTextFeildStyle(),
-                          ),
-                          TextField(
-                            decoration: InputDecoration(
-                                hintText: 'Email',
-                                hintStyle: AppWidget.semiBoldTextFeildStyle(),
-                                prefixIcon: Icon(Icons.email_outlined)),
-                          ),
-                          SizedBox(height: 20.0),
-                          TextField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                hintText: 'Şifre',
-                                hintStyle: AppWidget.semiBoldTextFeildStyle(),
-                                prefixIcon: Icon(Icons.password_outlined)),
-                          ),
-                          SizedBox(height: 20.0),
-                          Container(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "Parolamı Unuttum",
-                              style: AppWidget.semiBoldTextFeildStyle(),
+                      child: Form(
+                        key: _formkey,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 20.0),
+                            Text(
+                              "Giriş Yap",
+                              style: AppWidget.HeadlineTextFeildStyle(),
                             ),
-                          ),
-                          const SizedBox(height: 80.0),
-                          Material(
-                            elevation: 5.0,
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 8.0),
-                              width: 200,
-                              decoration: BoxDecoration(
-                                  color: Color(0Xfffff5722),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: const Center(
+                            TextFormField(
+                              controller: useremailcontroller,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter Email';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                  hintText: 'Email',
+                                  hintStyle: AppWidget.semiBoldTextFeildStyle(),
+                                  prefixIcon: Icon(Icons.email_outlined)),
+                            ),
+                            SizedBox(height: 20.0),
+                            TextFormField(
+                              controller: userpasswordcontroller,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter Password';
+                                }
+                                return null;
+                              },
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  hintText: 'Şifre',
+                                  hintStyle: AppWidget.semiBoldTextFeildStyle(),
+                                  prefixIcon: Icon(Icons.password_outlined)),
+                            ),
+                            SizedBox(height: 20.0),
+                            GestureDetector(
+                              // onTap: (){
+                              //   Navigator.push(context, MaterialPageRoute(builder: (context)=> Forgo()));
+                              // },
+                              child: Container(
+                                alignment: Alignment.topRight,
                                 child: Text(
-                                  "Giriş Yap",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Poppins1'),
+                                  "Parolamı Unuttum",
+                                  style: AppWidget.semiBoldTextFeildStyle(),
                                 ),
                               ),
                             ),
-                          )
-                        ],
+                            const SizedBox(height: 80.0),
+                            GestureDetector(
+                              onTap: () {
+                                if (_formkey.currentState!.validate()) {
+                                  setState(() {
+                                    email = useremailcontroller.text;
+                                    password = userpasswordcontroller.text;
+                                  });
+                                }
+                                userLogin();
+                              },
+                              child: Material(
+                                elevation: 5.0,
+                                borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                      color: Color(0Xfffff5722),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: const Center(
+                                    child: Text(
+                                      "Giriş Yap",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Poppins1'),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -130,7 +196,7 @@ class _LoginState extends State<Login> {
                           MaterialPageRoute(builder: (context) => Signup()));
                     },
                     child: Text(
-                      "Hesabınız yok mu ? Kayıt ol", 
+                      "Hesabınız yok mu ? Kayıt ol",
                       style: AppWidget.semiBoldTextFeildStyle(),
                     ),
                   )
