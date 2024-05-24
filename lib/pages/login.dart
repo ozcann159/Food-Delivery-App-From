@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/pages/bottomnav.dart';
+import 'package:fooddeliveryapp/pages/forgotpassword.dart';
 import 'package:fooddeliveryapp/pages/signup.dart';
 import 'package:fooddeliveryapp/widget/widget_support.dart';
 
@@ -140,9 +141,13 @@ class _LoginState extends State<Login> {
                             ),
                             SizedBox(height: 20.0),
                             GestureDetector(
-                              // onTap: (){
-                              //   Navigator.push(context, MaterialPageRoute(builder: (context)=> Forgo()));
-                              // },
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Forgotpassword()));
+                              },
                               child: Container(
                                 alignment: Alignment.topRight,
                                 child: Text(
